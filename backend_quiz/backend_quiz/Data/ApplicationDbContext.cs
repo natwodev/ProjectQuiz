@@ -11,7 +11,13 @@ namespace backend_quiz.Data
             : base(options)
         {
         }
+        public DbSet<Exam> Exams { get; set; }
+        public DbSet<Answer> Answers { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Submission> Submissions { get; set; }
+        public DbSet<UserAnswer> UserAnswers { get; set; }
+
         
-      
     }
+    
 }

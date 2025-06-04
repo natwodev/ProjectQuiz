@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "bLYFq2FQeVcVHUjuDrvqp/RnRhWhbFMjo9/QQB0FPug=",
+  "Source": "backend_quiz",
+  "BasePath": "_content/backend_quiz",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

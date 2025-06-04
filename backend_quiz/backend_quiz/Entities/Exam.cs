@@ -7,12 +7,16 @@ public class Exam
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int ExamId { get; set; }
     
-    [Required]
     [StringLength(100)]
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
+    [ForeignKey("ApplicationUser")]
+    public string? UserId { get; set; }
+    
+    public ApplicationUser? ApplicationUser { get; set; } 
+    
     public ICollection<Question>? Questions { get; set; } 
     public ICollection<Submission>? Submissions { get; set; } 
     

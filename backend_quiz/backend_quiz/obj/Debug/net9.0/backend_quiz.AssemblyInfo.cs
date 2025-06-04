@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("backend_quiz")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bfee7bda1d07d123c80777f53b95205f7032cb04")]
 [assembly: System.Reflection.AssemblyProductAttribute("backend_quiz")]
 [assembly: System.Reflection.AssemblyTitleAttribute("backend_quiz")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,14 +1,23 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace backend_quiz.Entities;
 
 public class Submission
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int SubmissionId { get; set; }
-    public int UserId { get; set; }
-    public ApplicationUser User { get; set; } 
-    public int ExamId { get; set; }
-    public Exam Exam { get; set; } 
-    public DateTime SubmittedAt { get; set; }
-    public float Score { get; set; }
-
-    public ICollection<UserAnswer> UserAnswers { get; set; } = new List<UserAnswer>();
+    
+    [ForeignKey("Exam")]
+    public int? ExamId { get; set; }
+    
+    public Exam? Exam { get; set; } 
+    
+    [ForeignKey("ApplicationUser")]
+    public string? UserId { get; set; }
+    
+    public ApplicationUser? ApplicationUser { get; set; } 
+    
+    public ICollection<UserAnswer>? UserAnswers { get; set; } 
 }
