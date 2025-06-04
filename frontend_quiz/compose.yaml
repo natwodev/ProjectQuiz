@@ -1,0 +1,7 @@
+﻿services:
+  frontend_quiz:
+    image: frontend_quiz
+    build:
+      context: .
+      dockerfile: frontend_quiz/Dockerfile
+
