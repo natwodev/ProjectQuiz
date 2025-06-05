@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using backend_quiz.Authentication.Services;
 using backend_quiz.Middlewares.Jwt;
-using backend_quiz.Service.Interface;
+using backend_quiz.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend_quiz.Authentication

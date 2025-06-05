@@ -11,14 +11,11 @@ namespace backend_quiz.Configurations
             options.AddPolicy("AdminOnly", policy =>
                 policy.RequireRole("Admin"));
             
-            options.AddPolicy("SellerOnly", policy =>
-                policy.RequireRole("Seller"));
+            options.AddPolicy("StudentOnly", policy =>
+                policy.RequireRole("Student"));
             
-            options.AddPolicy("CustomerOnly", policy =>
-                policy.RequireRole("Customer"));
-            
-            options.AddPolicy("CustomerOrAdmin", policy =>
-                policy.RequireRole("Customer","Admin"));
+            options.AddPolicy("StudentOrAdmin", policy =>
+                policy.RequireRole("Student","Admin"));
         }
     }
 }

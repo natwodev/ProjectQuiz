@@ -2,6 +2,7 @@ using AspNetCoreRateLimit;
 using backend_quiz.Configurations;
 using backend_quiz.Data;
 using backend_quiz.Entities;
+using backend_quiz.Mappings;
 using backend_quiz.Middlewares.Jwt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +46,7 @@ namespace backend_quiz.Extensions
                 options.Password.RequiredLength = 3;
                 options.Password.RequiredUniqueChars = 0;
             });
-            //services.AddAutoMapper(typeof(MappingProfile));
+            services.AddAutoMapper(typeof(MappingProfile));
 
             services.Configure<IdentityOptions>(options =>
             {

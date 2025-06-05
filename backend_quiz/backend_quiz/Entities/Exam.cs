@@ -20,6 +20,4 @@ public class Exam
     public ICollection<Question>? Questions { get; set; } 
     public ICollection<Submission>? Submissions { get; set; } 
     
-    
-
 }

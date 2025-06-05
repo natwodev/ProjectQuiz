@@ -74,7 +74,7 @@ namespace backend_quiz.Data
                 var result = await userManager.CreateAsync(user, customerPassword);
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Customer");
+                    await userManager.AddToRoleAsync(user, "Student");
                     await context.SaveChangesAsync();
                     Console.WriteLine("✅ Customer user đã được tạo.");
                 }

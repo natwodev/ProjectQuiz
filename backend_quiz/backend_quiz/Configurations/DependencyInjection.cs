@@ -1,9 +1,10 @@
 using backend_quiz.Authentication.Repositories;
 using backend_quiz.Authentication.Services;
-using backend_quiz.Repository.AuthRepository;
-using backend_quiz.Repository.Interface;
-using backend_quiz.Service.AuthService;
-using backend_quiz.Service.Interface;
+using backend_quiz.Repositories.AuthRepository;
+using backend_quiz.Repositories.Interfaces;
+using backend_quiz.Services.AuthService;
+using backend_quiz.Services.Interface;
+using backend_quiz.Services.Interfaces;
 
 namespace backend_quiz.Configurations
 {
@@ -15,12 +16,13 @@ namespace backend_quiz.Configurations
             // Register Repositories
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
-
+            services.AddScoped<IExamRepository, ExamRepository>();
 
             
             // Register Services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IExamService, ExamService>();
 
 
             

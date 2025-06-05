@@ -204,3 +204,5 @@
 /Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/backend_quiz/backend_quiz/obj/Debug/net9.0/backend_quiz.pdb
 /Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/backend_quiz/backend_quiz/obj/Debug/net9.0/backend_quiz.genruntimeconfig.cache
 /Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/backend_quiz/backend_quiz/obj/Debug/net9.0/ref/backend_quiz.dll
+/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/backend_quiz/backend_quiz/bin/Debug/net9.0/AutoMapper.dll
+/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/backend_quiz/backend_quiz/bin/Debug/net9.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll

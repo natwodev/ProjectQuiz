@@ -2,7 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using backend_quiz.Authentication.Repositories;
 using backend_quiz.Entities;
 using backend_quiz.Middlewares.Jwt;
-using backend_quiz.Repository.Interface;
+using backend_quiz.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Distributed;
 

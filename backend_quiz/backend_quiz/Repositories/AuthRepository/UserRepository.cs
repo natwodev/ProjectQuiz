@@ -1,10 +1,10 @@
 using backend_quiz.Entities;
-using backend_quiz.Repository.Interface;
+using backend_quiz.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend_quiz.Repository.AuthRepository
+namespace backend_quiz.Repositories.AuthRepository
 {
     public class UserRepository : IUserRepository
     {

@@ -1,10 +1,10 @@
 using backend_quiz.Entities;
-using backend_quiz.Repository.Interface;
-using backend_quiz.Service.Interface;
+using backend_quiz.Repositories.Interfaces;
+using backend_quiz.Services.Interface;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace backend_quiz.Service.AuthService
+namespace backend_quiz.Services.AuthService
 {
     public class UserService : IUserService
     {
