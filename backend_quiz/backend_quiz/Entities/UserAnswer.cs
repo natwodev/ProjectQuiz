@@ -12,15 +12,15 @@ public class UserAnswer
     [ForeignKey("Submission")]
     public int SubmissionId { get; set; }
     
-    public Submission? Submission { get; set; } 
+    public Submission Submission { get; set; } 
     
     [ForeignKey("Question")]
     public int QuestionId { get; set; }
     
-    public Question? Question { get; set; } 
+    public Question Question { get; set; } 
     
     [ForeignKey("SelectedAnswer")]
     public int SelectedAnswerId { get; set; }
     
-    public Answer? SelectedAnswer { get; set; } 
+    public Answer SelectedAnswer { get; set; } 
 }

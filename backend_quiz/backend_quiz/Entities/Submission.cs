@@ -10,12 +10,12 @@ public class Submission
     public int SubmissionId { get; set; }
     
     [ForeignKey("Exam")]
-    public int? ExamId { get; set; }
+    public int ExamId { get; set; }
     
-    public Exam? Exam { get; set; } 
+    public Exam Exam { get; set; } 
     
     [ForeignKey("ApplicationUser")]
-    public string? UserId { get; set; }
+    public string UserId { get; set; }
     
     public ApplicationUser? ApplicationUser { get; set; } 
     

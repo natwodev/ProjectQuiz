@@ -28,6 +28,13 @@ public class QuestionRepository :  IQuestionRepository
         return question != null ? _mapper.Map<QuestionDto>(question) : null;
     }
     
+    public async Task<Question?> GetQuestionEntityByIdAsync(int id)
+    {
+        return await _context.Questions
+            .Include(q => q.Answers)
+            .FirstOrDefaultAsync(q => q.Id == id);
+    }
+    
     public async Task<QuestionDto> CreateQuestionAsync(int examId, CreateQuestionDto dto)
     {
         var question = new Question
@@ -57,5 +64,16 @@ public class QuestionRepository :  IQuestionRepository
 
         return _mapper.Map<List<QuestionDto>>(questions);
     }
+    public async Task<bool> DeleteQuestionAsync(int id)
+    {
+        var question = await _context.Questions.FindAsync(id);
+        if (question == null)
+            return false;
+
+        _context.Questions.Remove(question);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
 
 }

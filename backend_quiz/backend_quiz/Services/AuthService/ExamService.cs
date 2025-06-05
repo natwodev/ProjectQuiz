@@ -48,8 +48,6 @@ public class ExamService : IExamService
 
     public async Task<bool> DeleteExamAsync(int id)
     {
-        // Additional business logic can be added here
-        // For example, checking if the exam has any submissions
         var exam = await _examRepository.GetExamEntityByIdAsync(id);
         if (exam?.Submissions?.Any() == true)
         {

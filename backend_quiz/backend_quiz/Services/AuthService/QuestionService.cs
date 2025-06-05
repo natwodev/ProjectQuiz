@@ -30,4 +30,11 @@ public class QuestionService :  IQuestionService
         return await _questionRepository.GetQuestionsByExamIdAsync(id);
     }
     
+    public async Task<bool> DeleteQuestionAsync(int id)
+    {
+        var answer = await _questionRepository.GetQuestionEntityByIdAsync(id);
+
+        return await _questionRepository.DeleteQuestionAsync(id);
+    }
+    
 }

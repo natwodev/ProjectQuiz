@@ -7,20 +7,16 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        // Exam → ExamDto (không map submissions)
         CreateMap<Exam, ExamDto>()
             .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions));
 
-        // Question → QuestionDto (không map exam)
         CreateMap<Question, QuestionDto>()
             .ForMember(dest => dest.Answers, opt => opt.MapFrom(src => src.Answers))
             .ForMember(dest => dest.ExamId, opt => opt.MapFrom(src => src.ExamId));
 
-        // Answer → AnswerDto (không map question)
         CreateMap<Answer, AnswerDto>()
             .ForMember(dest => dest.QuestionId, opt => opt.MapFrom(src => src.QuestionId));
 
-        // (Giữ nguyên phần Create/Update nếu cần)
         CreateMap<CreateExamDto, Exam>();
         CreateMap<UpdateExamDto, Exam>();
         CreateMap<CreateQuestionDto, Question>();

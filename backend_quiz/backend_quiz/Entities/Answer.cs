@@ -10,9 +10,9 @@ public class Answer
     public int AnswerId { get; set; }
     
     [ForeignKey("Question")]
-    public int? QuestionId { get; set; }
+    public int QuestionId { get; set; }
     
-    public Question? Question { get; set; } 
+    public Question Question { get; set; } 
     
     [MaxLength(100)]
     public string Content { get; set; }

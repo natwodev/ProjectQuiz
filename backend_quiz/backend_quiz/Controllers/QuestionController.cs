@@ -49,4 +49,16 @@ public class QuestionController : ControllerBase
         return Ok(exams);
     }
 
+    
+    [HttpDelete("{id}")]
+    [Authorize(Policy = "AdminOnly")]
+    public async Task<IActionResult> DeleteQuestionsAsync(int id)
+    {
+        var result = await _questionService.DeleteQuestionAsync(id);
+        if (!result)
+            return NotFound(new { message = "Question not found or could not be deleted." });
+
+        return Ok(true); 
+    }
+
 }
