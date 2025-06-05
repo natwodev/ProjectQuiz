@@ -20,6 +20,7 @@ public class ExamController : ControllerBase
     
     
     [HttpPost]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<ExamDto>> CreateExamAsync(CreateExamDto dto)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -31,6 +32,7 @@ public class ExamController : ControllerBase
     
     
     [HttpGet]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<IEnumerable<ExamDto>>> GetAllExamsAsync()
     {
         var exams = await _examService.GetAllExamsAsync();
