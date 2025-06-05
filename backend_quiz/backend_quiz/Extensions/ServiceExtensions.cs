@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AspNetCoreRateLimit;
 using backend_quiz.Configurations;
 using backend_quiz.Data;
@@ -31,6 +32,10 @@ namespace backend_quiz.Extensions
                     // googleOptions.CallbackPath = new PathString("/api/auth/external-login-callback");
                 });
                 */
+            
+            services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

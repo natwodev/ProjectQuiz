@@ -28,14 +28,34 @@ public class QuestionRepository :  IQuestionRepository
         return question != null ? _mapper.Map<QuestionDto>(question) : null;
     }
     
-    public async Task<QuestionDto> CreateQuestionAsync(int id,CreateQuestionDto dto)
+    public async Task<QuestionDto> CreateQuestionAsync(int examId, CreateQuestionDto dto)
     {
-        var question = _mapper.Map<Question>(dto);
-        question.ExamId = id;
+        var question = new Question
+        {
+            Content = dto.Content,
+            ExamId = examId,
+            Answers = dto.Answers?.Select(a => new Answer
+            {
+                Content = a.Content,
+                IsCorrect = a.IsCorrect
+            }).ToList()
+        };
+
         _context.Questions.Add(question);
         await _context.SaveChangesAsync();
 
-        return await GetQuestionByIdAsync(question.Id) 
+        return await GetQuestionByIdAsync(question.Id)
                ?? throw new Exception("Failed to create question");
     }
+
+    public async Task<List<QuestionDto>> GetQuestionsByExamIdAsync(int examId)
+    {
+        var questions = await _context.Questions
+            .Include(q => q.Answers)
+            .Where(q => q.ExamId == examId)
+            .ToListAsync();
+
+        return _mapper.Map<List<QuestionDto>>(questions);
+    }
+
 }

@@ -10,8 +10,7 @@ public class ExamDto
 
     public string? UserId { get; set; }
     
-    public ICollection<Question>? Questions { get; set; } 
-    public ICollection<Submission>? Submissions { get; set; } 
+    public ICollection<QuestionDto>? Questions { get; set; } 
 
 }
 
@@ -25,7 +24,5 @@ public class CreateExamDto
 public class UpdateExamDto
 {
     public string Title { get; set; }
-
-    public string? UserId { get; set; }
     
 }

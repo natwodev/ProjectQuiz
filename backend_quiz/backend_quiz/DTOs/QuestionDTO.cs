@@ -12,7 +12,6 @@ public class QuestionDto
 
 public class CreateQuestionDto
 {
-   // public int ExamId { get; set; }
     public string Content { get; set; }
     public ICollection<CreateAnswerDto>? Answers { get; set; }
 }

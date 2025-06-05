@@ -23,7 +23,6 @@ public class ExamRepository : IExamRepository
         var exams = await _context.Exams
             .Include(e => e.Questions)
                 .ThenInclude(q => q.Answers)
-            .Include(e => e.Submissions)
             .ToListAsync();
 
         return _mapper.Map<IEnumerable<ExamDto>>(exams);
@@ -34,7 +33,6 @@ public class ExamRepository : IExamRepository
         var exam = await _context.Exams
             .Include(e => e.Questions)
                 .ThenInclude(q => q.Answers)
-            .Include(e => e.Submissions)
             .FirstOrDefaultAsync(e => e.ExamId == id);
 
         return exam != null ? _mapper.Map<ExamDto>(exam) : null;
@@ -45,7 +43,6 @@ public class ExamRepository : IExamRepository
         return await _context.Exams
             .Include(e => e.Questions)
                 .ThenInclude(q => q.Answers)
-            .Include(e => e.Submissions)
             .FirstOrDefaultAsync(e => e.ExamId == id);
     }
 
@@ -54,7 +51,6 @@ public class ExamRepository : IExamRepository
         var exams = await _context.Exams
             .Include(e => e.Questions)
                 .ThenInclude(q => q.Answers)
-            .Include(e => e.Submissions)
             .Where(e => e.UserId == userId)
             .ToListAsync();
 

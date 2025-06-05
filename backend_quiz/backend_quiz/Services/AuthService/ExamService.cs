@@ -64,11 +64,13 @@ public class ExamService : IExamService
         // Additional business logic can be added here
         // For example, checking if any exams have submissions
         var exams = await _examRepository.GetAllExamsAsync();
+        /*
         if (exams.Any(e => e.Submissions?.Any() == true))
         {
             throw new InvalidOperationException("Cannot delete exams with existing submissions");
         }
         
+        */
         return await _examRepository.DeleteAllExamsAsync();
     }
 

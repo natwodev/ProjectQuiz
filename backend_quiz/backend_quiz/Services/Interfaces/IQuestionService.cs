@@ -1,10 +1,10 @@
 using backend_quiz.DTOs;
 
-namespace backend_quiz.Repositories.Interfaces;
+namespace backend_quiz.Services.Interfaces;
 
-public interface IQuestionRepository
+public interface IQuestionService
 {
     Task<QuestionDto?> GetQuestionByIdAsync(int id);
     Task<QuestionDto> CreateQuestionAsync(int id, CreateQuestionDto dto);
-    Task<List<QuestionDto>> GetQuestionsByExamIdAsync(int examId);
+    Task<IEnumerable<QuestionDto>> GetQuestionsByExamIdAsync(int id);
 }

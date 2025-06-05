@@ -49,6 +49,7 @@ public class ExamController : ControllerBase
     
     
     [HttpGet("my-exam")]
+    [Authorize(Policy = "AdminOnly")]
     public async Task<ActionResult<IEnumerable<ExamDto>>> GetExamsByUserIdAsync()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -58,4 +59,15 @@ public class ExamController : ControllerBase
         return Ok(exams);
     }
 
+    
+    [HttpPatch("{id}")]
+    [Authorize(Policy = "AdminOnly")]
+    public async Task<ActionResult<ExamDto>> UpdateExamAsync(int id, UpdateExamDto dto)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized(new { message = "Token không hợp lệ!" });
+        var exams = await _examService.UpdateExamAsync(id,dto);
+        return Ok(exams);
+    }
 }
