@@ -10,8 +10,6 @@ public class SubmissionDto
 
 public class CreateSubmissionDto
 {
-    public int? ExamId { get; set; }
-    public string? UserId { get; set; }
     public ICollection<CreateUserAnswerDto>? UserAnswers { get; set; }
 }
 

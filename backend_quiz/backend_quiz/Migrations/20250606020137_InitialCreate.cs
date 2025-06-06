@@ -252,7 +252,7 @@ namespace backend_quiz.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubmissionId = table.Column<int>(type: "int", nullable: false),
                     QuestionId = table.Column<int>(type: "int", nullable: false),
-                    SelectedAnswerId = table.Column<int>(type: "int", nullable: false)
+                    SelectedAnswerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {

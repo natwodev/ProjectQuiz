@@ -19,6 +19,7 @@ namespace backend_quiz.Configurations
             services.AddScoped<IExamRepository, ExamRepository>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
+            services.AddScoped<ISubmissionRepository, SubmissionRepository>();
 
             
             // Register Services
@@ -27,6 +28,7 @@ namespace backend_quiz.Configurations
             services.AddScoped<IExamService, ExamService>();
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<ISubmissionService, SubmissionService>();
 
 
 

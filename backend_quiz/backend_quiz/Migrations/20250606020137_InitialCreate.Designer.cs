@@ -12,7 +12,7 @@ using backend_quiz.Data;
 namespace backend_quiz.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250605173813_InitialCreate")]
+    [Migration("20250606020137_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -334,7 +334,7 @@ namespace backend_quiz.Migrations
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SelectedAnswerId")
+                    b.Property<int?>("SelectedAnswerId")
                         .HasColumnType("int");
 
                     b.Property<int>("SubmissionId")
@@ -465,8 +465,7 @@ namespace backend_quiz.Migrations
                     b.HasOne("backend_quiz.Entities.Answer", "SelectedAnswer")
                         .WithMany()
                         .HasForeignKey("SelectedAnswerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("backend_quiz.Entities.Submission", "Submission")
                         .WithMany("UserAnswers")

@@ -10,9 +10,8 @@ public class UserAnswerDto
 
 public class CreateUserAnswerDto
 {
-    public int SubmissionId { get; set; }
     public int QuestionId { get; set; }
-    public int SelectedAnswerId { get; set; }
+    public int? SelectedAnswerId { get; set; }
 }
 
 public class UpdateUserAnswerDto

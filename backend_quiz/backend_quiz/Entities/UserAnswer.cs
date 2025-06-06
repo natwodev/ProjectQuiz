@@ -20,7 +20,7 @@ public class UserAnswer
     public Question Question { get; set; } 
     
     [ForeignKey("SelectedAnswer")]
-    public int SelectedAnswerId { get; set; }
+    public int? SelectedAnswerId { get; set; }
     
-    public Answer SelectedAnswer { get; set; } 
+    public Answer? SelectedAnswer { get; set; } 
 }
