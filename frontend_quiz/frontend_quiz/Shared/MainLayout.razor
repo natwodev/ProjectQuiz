@@ -1,13 +1,28 @@
-﻿@inherits LayoutComponentBase
+﻿@using frontend_quiz.Services
+@inherits LayoutComponentBase
+@implements IDisposable
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject NavigationManager Navigation
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu/>
     </div>
 
     <main>
         <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+           
+            
+            @if (_isAuthenticated)
+            {
+                <span>Xin chào, @(_userRole ?? "Người dùng")!</span>
+                <button class="ml-auto btn btn-link" @onclick="Logout">Đăng xuất</button>
+            }
+            else
+            {
+                <NavLink href="/login">Đăng nhập</NavLink>
+            }
         </div>
 
         <article class="content px-4">
@@ -15,3 +30,59 @@
         </article>
     </main>
 </div>
+
+@code {
+    private bool _isAuthenticated = false;
+    private string? _userRole;
+    private bool _isAdmin;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Đăng ký lắng nghe sự kiện khi component được khởi tạo
+        AuthService.OnAuthStateChanged += AuthService_OnAuthStateChanged;
+        // Kiểm tra trạng thái ban đầu
+        await CheckAuthenticationState();
+    }
+
+    // Phương thức này sẽ được gọi khi trạng thái xác thực thay đổi
+    // async void được sử dụng cho event handlers để không chặn UI thread
+    private async void AuthService_OnAuthStateChanged()
+    {
+        // Cập nhật trạng thái và role và gọi StateHasChanged
+        await CheckAuthenticationState();
+    }
+
+    // Kiểm tra trạng thái xác thực hiện tại và cập nhật UI
+    private async Task CheckAuthenticationState()
+    {
+        _isAdmin = await AuthService.IsAdmin();
+
+        _isAuthenticated = await AuthService.IsAuthenticated();
+        if (_isAuthenticated)
+        {
+            _userRole = await AuthService.GetUserRoleFromToken();
+        }
+        else
+        {
+            _userRole = null;
+        }
+        // Gọi InvokeAsync(StateHasChanged) để đảm bảo cập nhật UI trên luồng UI thread
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task Logout()
+    {
+        // Thực hiện đăng xuất thông qua AuthService
+        await AuthService.Logout();
+        // Sự kiện OnAuthStateChanged sẽ được AuthService kích hoạt sau khi đăng xuất,
+        // và AuthService_OnAuthStateChanged sẽ xử lý việc cập nhật UI.
+        Navigation.NavigateTo("/counter");
+
+    }
+
+    public void Dispose()
+    {
+        // Hủy đăng ký lắng nghe sự kiện khi component bị hủy để tránh rò rò rỉ bộ nhớ
+        AuthService.OnAuthStateChanged -= AuthService_OnAuthStateChanged;
+    }
+}

@@ -1,0 +1,69 @@
+@page "/login"
+@using frontend_quiz.DTOs
+@using frontend_quiz.Services
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<h3>Đăng nhập</h3>
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<EditForm Model="loginModel" OnValidSubmit="HandleLogin" FormName="loginForm">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label>Tên đăng nhập:</label>
+        <InputText @bind-Value="loginModel.UserName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Mật khẩu:</label>
+        <InputText type="password" @bind-Value="loginModel.Password" class="form-control" />
+    </div>
+    <button class="btn btn-primary" type="submit" disabled="@isLoading">
+        @if (isLoading)
+        {
+            <span class="spinner-border spinner-border-sm"></span>
+            <span> Đang đăng nhập...</span>
+        }
+        else
+        {
+            <span>Đăng nhập</span>
+        }
+    </button>
+</EditForm>
+
+@code {
+    private LoginModelDto loginModel = new();
+    private string errorMessage = "";
+    private bool isLoading = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Kiểm tra nếu đã đăng nhập thì chuyển hướng về trang chủ
+        if (await AuthService.IsAuthenticated())
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        errorMessage = "";
+
+        var result = await AuthService.Login(loginModel.UserName, loginModel.Password);
+
+        if (result.IsSuccess)
+        {
+            NavigationManager.NavigateTo("/counter");
+        }
+        else
+        {
+            errorMessage = result.ErrorMessage;
+        }
+
+        isLoading = false;
+    }
+}

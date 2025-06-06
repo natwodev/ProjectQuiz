@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/frontend_quiz.props" />
+</Project>
