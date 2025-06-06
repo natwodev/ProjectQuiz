@@ -16,8 +16,5 @@ public class CreateUserAnswerDto
 
 public class UpdateUserAnswerDto
 {
-    public int UserAnswerId { get; set; }
-    public int SubmissionId { get; set; }
-    public int QuestionId { get; set; }
     public int SelectedAnswerId { get; set; }
 } 

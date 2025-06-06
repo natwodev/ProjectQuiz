@@ -26,7 +26,7 @@ namespace backend_quiz.Authentication
         
         // Đăng nhập
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModelDTO loginModel)
+        public async Task<IActionResult> Login([FromBody] LoginModelDto loginModel)
         {
             try
             {
@@ -52,7 +52,7 @@ namespace backend_quiz.Authentication
         
         // Đăng nhập bí mật
         [HttpPost("secret-login")]
-        public async Task<IActionResult> SecretLogin([FromQuery] string key, [FromBody] LoginModelDTO loginModel)
+        public async Task<IActionResult> SecretLogin([FromQuery] string key, [FromBody] LoginModelDto loginModel)
         {
             var secretKey = _configuration["SecretAccess:SecretLoginKey"];
 

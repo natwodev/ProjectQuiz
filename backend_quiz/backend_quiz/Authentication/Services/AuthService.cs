@@ -29,7 +29,7 @@ namespace backend_quiz.Authentication.Services
            }
    
            // Phương thức xác thực
-          public async Task<AuthResultDto> AuthenticateAsync(LoginModelDTO loginModel)
+          public async Task<AuthResultDto> AuthenticateAsync(LoginModelDto loginModel)
           {
               // Tìm kiếm người dùng theo tên đăng nhập
               var user = await _authRepository.GetUserByUsernameAsync(loginModel.UserName);
