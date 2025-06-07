@@ -24,12 +24,36 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Exam/CreateExam.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXhhbS9DcmVhdGVFeGFtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Exam/List.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXhhbS9MaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Exam/Show.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXhhbS9TaG93LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Exam/UpdateExam.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXhhbS9VcGRhdGVFeGFtLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Login.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Question/CreateQuestion.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUXVlc3Rpb24vQ3JlYXRlUXVlc3Rpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Question/UpdateQuestion.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUXVlc3Rpb24vVXBkYXRlUXVlc3Rpb24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Shared/SurveyPrompt.razor]

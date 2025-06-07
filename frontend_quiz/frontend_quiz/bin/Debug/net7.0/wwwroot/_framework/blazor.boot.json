@@ -205,13 +205,13 @@
       "mscorlib.dll": "sha256-HYyp9hO+GKFyupcEiY1PxtBBXbHzefsO3Q8RiQTaNCA=",
       "netstandard.dll": "sha256-N5CcC3sLzGBesbmeJAp5bwxABN9u7SwkIO5qfFjzoik=",
       "System.Private.CoreLib.dll": "sha256-bJS1DJmhjP7PvegYG+Z8O9EDtRY78HKinA3LUMVLlSQ=",
-      "frontend_quiz.dll": "sha256-nRH4F+15HkYzcGyqPsGyqhUHTXYA\/WMCFCwpedF42+w="
+      "frontend_quiz.dll": "sha256-A0DC4uonHQVMYuWLfTPA0HKy72RLmKDL5v8M6TGire4="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
-      "frontend_quiz.pdb": "sha256-G4cwcplnF5yDaco7qwOiAnHusy66IfjUQbUBfxmisXk="
+      "frontend_quiz.pdb": "sha256-r2uNzr+xOFByIHFwqzS7donhP3R7ANzIKoZ1hTq9UWw="
     },
     "runtime": {
       "dotnet.7.0.20.5ggx4yh2ix.js": "sha256-eaJTmow4t8eE7FZMZR5Ja41JMOefGCbIYDTdpclGsac=",

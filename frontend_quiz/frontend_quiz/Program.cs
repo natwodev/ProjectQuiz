@@ -11,6 +11,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<ExamService>();
+builder.Services.AddScoped<QuestionService>();
 
 // Đăng ký AuthHeaderHandler
 builder.Services.AddTransient<AuthHeaderHandler>();

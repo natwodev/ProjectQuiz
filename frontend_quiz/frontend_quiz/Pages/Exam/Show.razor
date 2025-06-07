@@ -1,0 +1,159 @@
+@page "/exam/view/{id:int}"
+@using frontend_quiz.DTOs
+@using frontend_quiz.Services
+@inject ExamService ExamService
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject QuestionService questionService
+
+<h3>Chi tiết bài kiểm tra</h3>
+<button class="btn btn-secondary mb-3" @onclick="GoBackToExams">
+    ← Quay lại danh sách
+</button>
+@if (!string.IsNullOrEmpty(_message))
+{
+    <div class="alert alert-info mt-3">@_message</div>
+}
+<hr />
+<h4>Thêm câu hỏi mới</h4>
+<EditForm Model="_question" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label class="form-label">Nội dung câu hỏi <span class="text-danger">*</span></label>
+        <InputTextArea class="form-control" @bind-Value="_question.Content" placeholder="Nhập nội dung câu hỏi..." />
+        <ValidationMessage For="@(() => _question.Content)" />
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Tạo câu hỏi</button>
+</EditForm>
+@if (!_isAuthenticated)
+{
+    <div class="alert alert-warning">
+        Vui lòng <a href="/login">đăng nhập</a> để xem nội dung bài kiểm tra.
+    </div>
+}
+else if (!_isAdmin)
+{
+    <div class="alert alert-danger">
+        Bạn không có quyền truy cập trang này.
+    </div>
+}
+else if (_exam == null)
+{
+    <p><em>Đang tải dữ liệu...</em></p>
+}
+else
+{
+    <div class="card my-3">
+        <div class="card-body">
+            <h4>@_exam.Title</h4>
+            <p><strong>Người tạo:</strong> @_exam.UserId</p>
+        </div>
+    </div>
+
+    @if (_exam.Questions != null && _exam.Questions.Any())
+    {
+        int questionNumber = 1;
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Danh sách câu hỏi</h5>
+                <div class="list-group">
+                    @foreach (var question in _exam.Questions)
+                    {
+                        <div class="list-group-item">
+                            <h6 class="mb-1">Câu @questionNumber: @question.Content</h6>
+                            <small class="text-muted">
+                                @foreach (var answer in question.Answers)
+                                {
+                                    <div>
+                                        @answer.Content
+                                        @if (answer.IsCorrect)
+                                        {
+                                            <span class="text-success fw-bold"> (Đúng)</span>
+                                        }
+                                    </div>
+                                }
+                            </small>
+                        </div>
+                        questionNumber++;
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p><em>Không có câu hỏi nào trong bài kiểm tra này.</em></p>
+    }
+    
+
+   
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private ExamDto? _exam;
+    private bool _isAdmin;
+    private bool _isAuthenticated;
+
+    private CreateQuestionDto _question = new()
+    {
+        Content = "",
+        Answers = new List<CreateAnswerDto>()
+    };
+
+    private string? _message;
+
+    private async Task HandleValidSubmit()
+    {
+        if (string.IsNullOrWhiteSpace(_question.Content))
+        {
+            _message = "Vui lòng nhập nội dung câu hỏi!";
+            return;
+        }
+
+        var response = await questionService.CreateQuestionAsync(id, _question);
+        if (response.IsSuccessStatusCode)
+        {
+            _message = "Tạo câu hỏi thành công!";
+            _question = new CreateQuestionDto
+            {
+                Content = "",
+                Answers = new List<CreateAnswerDto>()
+            };
+            _exam = await ExamService.GetExamByIdAsync(id);
+        }
+        else
+        {
+            _message = "Đã xảy ra lỗi khi tạo câu hỏi.";
+        }
+    }
+
+    private void GoBackToExams()
+    {
+        NavigationManager.NavigateTo("/exams");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isAuthenticated = await AuthService.IsAuthenticated();
+        _isAdmin = await AuthService.IsAdmin();
+
+        if (!_isAuthenticated)
+        {
+            return;
+        }
+
+        if (!_isAdmin)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
+        _exam = await ExamService.GetExamByIdAsync(id);
+    }
+}

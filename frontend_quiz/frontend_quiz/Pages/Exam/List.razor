@@ -1,0 +1,90 @@
+@page "/exams"
+@using frontend_quiz.DTOs
+@using frontend_quiz.Services
+@inject ExamService ExamService
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+@if (!_isAuthenticated)
+{
+    <div class="alert alert-warning">
+        Please <a href="/login">login</a> to view your orders.
+    </div>
+}else if (!_isAdmin)
+{
+    <div class="alert alert-danger">
+        Bạn không có quyền truy cập trang này.
+    </div>
+}
+else
+{
+    <h3>Danh sách bài kiểm tra</h3>
+    <button class="btn btn-secondary mb-3" @onclick="GoToCreateExams">
+        Tạo bài kiểm tra
+    </button>
+    @if (_exams == null)
+    {
+        <p><em>Đang tải...</em></p>
+    }
+    else if (!_exams.Any())
+    {
+        <p><em>Không có bài kiểm tra nào.</em></p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tiêu đề</th>
+                <th>Người tạo</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var exam in _exams)
+            {
+                <tr>
+                    <td>@exam.ExamId</td>
+                    <td>@exam.Title</td>
+                    <td>@exam.UserId</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" @onclick="() => NavigateToView(exam.ExamId)" title="Xem chi tiết">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    private bool _isAdmin;
+    private List<ExamDto>? _exams;
+    private bool _isAuthenticated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isAdmin = await AuthService.IsAdmin();
+        _isAuthenticated = await AuthService.IsAuthenticated();
+
+        if (!_isAdmin)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
+        var exams = await ExamService.GetAllExamsAsync();
+        _exams = exams?.ToList();
+    }
+    private void GoToCreateExams()
+    {
+        NavigationManager.NavigateTo("/CreateExam");
+    }
+    private void NavigateToView(int id)
+    {
+        NavigationManager.NavigateTo($"/exam/view/{id}");
+    }
+}
