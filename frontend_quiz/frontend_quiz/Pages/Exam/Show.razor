@@ -26,9 +26,38 @@
         <ValidationMessage For="@(() => _question.Content)" />
     </div>
 
-    <br />
+    <h5>Danh sách câu trả lời</h5>
+    @foreach (var answer in _question.Answers)
+    {
+        var index = _question.Answers.IndexOf(answer);
+        <div class="mb-2 d-flex align-items-start">
+            <InputText class="form-control me-2" 
+                       @bind-Value="_question.Answers[index].Content" 
+                       placeholder="Nhập câu trả lời..." />
+
+            <!-- Thay checkbox bằng radio -->
+            <input type="radio" 
+                   name="correctAnswer" 
+                   class="form-check-input mt-2 me-2"
+                   checked="@_question.Answers[index].IsCorrect"
+                   @onchange="@(() => MarkAsCorrect(index))" />
+
+            <label class="form-check-label mt-2 me-2">Đúng</label>
+
+            <button type="button" 
+                    class="btn btn-danger btn-sm mt-1" 
+                    @onclick="@(() => RemoveAnswer(index))">X</button>
+        </div>
+        <ValidationMessage For="@(() => _question.Answers[index].Content)" />
+    }
+
+
+    <button type="button" class="btn btn-secondary mt-2" @onclick="AddAnswer">+ Thêm câu trả lời</button>
+
+    <br /><br />
     <button type="submit" class="btn btn-primary">Tạo câu hỏi</button>
 </EditForm>
+
 @if (!_isAuthenticated)
 {
     <div class="alert alert-warning">
@@ -72,7 +101,7 @@ else
                                         @answer.Content
                                         @if (answer.IsCorrect)
                                         {
-                                            <span class="text-success fw-bold"> (Đúng)</span>
+                                            <span class="text-success fw-bold"> ✔</span>
                                         }
                                     </div>
                                 }
@@ -92,7 +121,6 @@ else
 
    
 }
-
 @code {
     [Parameter] public int id { get; set; }
 
@@ -103,7 +131,7 @@ else
     private CreateQuestionDto _question = new()
     {
         Content = "",
-        Answers = new List<CreateAnswerDto>()
+        Answers = new List<CreateAnswerDto> { new CreateAnswerDto() }
     };
 
     private string? _message;
@@ -116,6 +144,18 @@ else
             return;
         }
 
+        if (_question.Answers.Count < 2)
+        {
+            _message = "Phải có ít nhất 2 câu trả lời.";
+            return;
+        }
+
+        if (!_question.Answers.Any(a => a.IsCorrect))
+        {
+            _message = "Phải chọn ít nhất 1 câu trả lời đúng.";
+            return;
+        }
+
         var response = await questionService.CreateQuestionAsync(id, _question);
         if (response.IsSuccessStatusCode)
         {
@@ -123,9 +163,9 @@ else
             _question = new CreateQuestionDto
             {
                 Content = "",
-                Answers = new List<CreateAnswerDto>()
+                Answers = new List<CreateAnswerDto> { new CreateAnswerDto() }
             };
-            _exam = await ExamService.GetExamByIdAsync(id);
+            _exam = await ExamService.GetExamByIdAsync(id); // Refresh danh sách câu hỏi
         }
         else
         {
@@ -133,9 +173,30 @@ else
         }
     }
 
+    private void AddAnswer()
+    {
+        _question.Answers.Add(new CreateAnswerDto());
+    }
+
+    private void RemoveAnswer(int index)
+    {
+        if (_question.Answers.Count > 1)
+        {
+            _question.Answers.RemoveAt(index);
+        }
+    }
+
     private void GoBackToExams()
     {
         NavigationManager.NavigateTo("/exams");
+    }
+
+    private void MarkAsCorrect(int selectedIndex)
+    {
+        for (int i = 0; i < _question.Answers.Count; i++)
+        {
+            _question.Answers[i].IsCorrect = (i == selectedIndex);
+        }
     }
 
     protected override async Task OnInitializedAsync()
