@@ -22,5 +22,11 @@ public class QuestionService
         var question = await _http.GetFromJsonAsync<QuestionDto>($"api/question/{id}/exam");
         return question;
     }
+    public async Task<bool> DeleteQuestionAsync(int id)
+    {
+        var response = await _http.DeleteAsync($"api/question/{id}");
+        return response.IsSuccessStatusCode;
+    }
 
+    
 }

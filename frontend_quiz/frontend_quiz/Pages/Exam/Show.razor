@@ -109,6 +109,7 @@ else
                                 </small>
                             </div>
                             questionNumber++;
+                            <button @onclick="() => AskDelete(question.Id)" class="btn btn-danger">Xoá</button>
                         }
                     </div>
                 </div>
@@ -121,12 +122,53 @@ else
     }
 }
 
+@if (_showConfirmDialog)
+{
+    <div class="modal-backdrop fade show"></div>
+    <div class="modal d-block" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận xoá</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xoá câu hỏi này?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="CancelDelete">Huỷ</button>
+                    <button class="btn btn-danger" @onclick="ConfirmDelete">Xoá</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 @code {
     [Parameter] public int id { get; set; }
 
     private ExamDto? _exam;
     private bool _isAdmin;
     private bool _isAuthenticated;
+    private bool _showConfirmDialog = false;
+    private int _questionIdToDelete;
+
+    private void AskDelete(int questionId)
+    {
+        _questionIdToDelete = questionId;
+        _showConfirmDialog = true;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        await DeleteQuestion(_questionIdToDelete);
+        _showConfirmDialog = false;
+    }
+
+    private void CancelDelete()
+    {
+        _showConfirmDialog = false;
+    }
 
     private CreateQuestionDto _question = new()
     {
@@ -156,6 +198,12 @@ else
             return;
         }
 
+        if (_question.Answers.Any(a => string.IsNullOrWhiteSpace(a.Content)))
+        {
+            _message = "Vui lòng nhập nội dung cho tất cả các câu trả lời!";
+            return;
+        }
+
         var response = await questionService.CreateQuestionAsync(id, _question);
         if (response.IsSuccessStatusCode)
         {
@@ -165,7 +213,7 @@ else
                 Content = "",
                 Answers = new List<CreateAnswerDto> { new CreateAnswerDto() }
             };
-            _exam = await ExamService.GetExamByIdAsync(id); // Refresh danh sách câu hỏi
+            _exam = await ExamService.GetExamByIdAsync(id); 
         }
         else
         {
@@ -217,4 +265,19 @@ else
 
         _exam = await ExamService.GetExamByIdAsync(id);
     }
+
+    private async Task DeleteQuestion(int questionId)
+    {
+        var result = await questionService.DeleteQuestionAsync(questionId);
+        if (result)
+        {
+            _message = "Đã xoá câu hỏi thành công!";
+            _exam = await ExamService.GetExamByIdAsync(id); // cập nhật lại danh sách câu hỏi
+        }
+        else
+        {
+            _message = "Không thể xoá câu hỏi. Có thể câu hỏi không tồn tại.";
+        }
+    }
+
 }
