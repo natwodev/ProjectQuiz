@@ -1,0 +1,60 @@
+@page "/submission/view/{id:int}"
+@using frontend_quiz.DTOs
+@using frontend_quiz.Services
+@inject SubmissionService Submission
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject QuestionService questionService
+
+
+@if (!_isAuthenticated)
+{
+    <div class="alert alert-warning">
+        Vui lòng <a href="/login">đăng nhập</a> để xem nội dung bài kiểm tra.
+    </div>
+}
+else if (!_isStudent)
+{
+    <div class="alert alert-danger">
+        Bạn không có quyền truy cập trang này.
+    </div>
+}
+else
+{
+    <h3>Chi tiết bài kiểm tra</h3>
+    @if (_submission == null)
+    {
+        <p><em>Đang tải dữ liệu...</em></p>
+    }
+    else
+    {
+        <div class="card my-3">
+            <div class="card-body">
+                <h4>@_submission.ExamId</h4>
+                <p><strong>Người Thi:</strong> @_submission.UserId</p>
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter] public int id { get; set; }
+    
+    private SubmissionDto? _submission;
+    private bool _isStudent;
+    private bool _isAuthenticated;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isStudent = await AuthService.IsStudent();
+        _isAuthenticated = await AuthService.IsAuthenticated();
+
+        if (!_isStudent)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
+        var _submission = await Submission.GetSubmissionByIdAsync(id);
+    }
+}

@@ -56,6 +56,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUXVlc3Rpb24vVXBkYXRlUXVlc3Rpb24ucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Submission/List.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU3VibWlzc2lvbi9MaXN0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Pages/Submission/Show.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU3VibWlzc2lvbi9TaG93LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/nguyenhuynhnam/RiderProjects/ProjectQuiz/frontend_quiz/frontend_quiz/Shared/SurveyPrompt.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL1N1cnZleVByb21wdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

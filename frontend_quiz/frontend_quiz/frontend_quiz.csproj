@@ -14,7 +14,6 @@
 
     <ItemGroup>
       <Folder Include="Pages\Answer\" />
-      <Folder Include="Pages\Submission\" />
     </ItemGroup>
 
 </Project>

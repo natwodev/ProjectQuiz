@@ -13,6 +13,8 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ExamService>();
 builder.Services.AddScoped<QuestionService>();
+builder.Services.AddScoped<SubmissionService>();
+
 
 // Đăng ký AuthHeaderHandler
 builder.Services.AddTransient<AuthHeaderHandler>();

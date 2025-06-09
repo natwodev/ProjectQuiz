@@ -6,58 +6,6 @@
 @inject NavigationManager NavigationManager
 @inject QuestionService questionService
 
-<h3>Chi tiết bài kiểm tra</h3>
-<button class="btn btn-secondary mb-3" @onclick="GoBackToExams">
-    ← Quay lại danh sách
-</button>
-@if (!string.IsNullOrEmpty(_message))
-{
-    <div class="alert alert-info mt-3">@_message</div>
-}
-<hr />
-<h4>Thêm câu hỏi mới</h4>
-<EditForm Model="_question" OnValidSubmit="HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="mb-3">
-        <label class="form-label">Nội dung câu hỏi <span class="text-danger">*</span></label>
-        <InputTextArea class="form-control" @bind-Value="_question.Content" placeholder="Nhập nội dung câu hỏi..." />
-        <ValidationMessage For="@(() => _question.Content)" />
-    </div>
-
-    <h5>Danh sách câu trả lời</h5>
-    @foreach (var answer in _question.Answers)
-    {
-        var index = _question.Answers.IndexOf(answer);
-        <div class="mb-2 d-flex align-items-start">
-            <InputText class="form-control me-2" 
-                       @bind-Value="_question.Answers[index].Content" 
-                       placeholder="Nhập câu trả lời..." />
-
-            <!-- Thay checkbox bằng radio -->
-            <input type="radio" 
-                   name="correctAnswer" 
-                   class="form-check-input mt-2 me-2"
-                   checked="@_question.Answers[index].IsCorrect"
-                   @onchange="@(() => MarkAsCorrect(index))" />
-
-            <label class="form-check-label mt-2 me-2">Đúng</label>
-
-            <button type="button" 
-                    class="btn btn-danger btn-sm mt-1" 
-                    @onclick="@(() => RemoveAnswer(index))">X</button>
-        </div>
-        <ValidationMessage For="@(() => _question.Answers[index].Content)" />
-    }
-
-
-    <button type="button" class="btn btn-secondary mt-2" @onclick="AddAnswer">+ Thêm câu trả lời</button>
-
-    <br /><br />
-    <button type="submit" class="btn btn-primary">Tạo câu hỏi</button>
-</EditForm>
-
 @if (!_isAuthenticated)
 {
     <div class="alert alert-warning">
@@ -70,57 +18,109 @@ else if (!_isAdmin)
         Bạn không có quyền truy cập trang này.
     </div>
 }
-else if (_exam == null)
-{
-    <p><em>Đang tải dữ liệu...</em></p>
-}
 else
 {
-    <div class="card my-3">
-        <div class="card-body">
-            <h4>@_exam.Title</h4>
-            <p><strong>Người tạo:</strong> @_exam.UserId</p>
-        </div>
-    </div>
-
-    @if (_exam.Questions != null && _exam.Questions.Any())
+    <h3>Chi tiết bài kiểm tra</h3>
+    <button class="btn btn-secondary mb-3" @onclick="GoBackToExams">
+        ← Quay lại danh sách
+    </button>
+    @if (!string.IsNullOrEmpty(_message))
     {
-        int questionNumber = 1;
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Danh sách câu hỏi</h5>
-                <div class="list-group">
-                    @foreach (var question in _exam.Questions)
-                    {
-                        <div class="list-group-item">
-                            <h6 class="mb-1">Câu @questionNumber: @question.Content</h6>
-                            <small class="text-muted">
-                                @foreach (var answer in question.Answers)
-                                {
-                                    <div>
-                                        @answer.Content
-                                        @if (answer.IsCorrect)
-                                        {
-                                            <span class="text-success fw-bold"> ✔</span>
-                                        }
-                                    </div>
-                                }
-                            </small>
-                        </div>
-                        questionNumber++;
-                    }
-                </div>
-            </div>
+        <div class="alert alert-info mt-3">@_message</div>
+    }
+    <hr />
+    <h4>Thêm câu hỏi mới</h4>
+    <EditForm Model="_question" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="mb-3">
+            <label class="form-label">Nội dung câu hỏi <span class="text-danger">*</span></label>
+            <InputTextArea class="form-control" @bind-Value="_question.Content" placeholder="Nhập nội dung câu hỏi..." />
+            <ValidationMessage For="@(() => _question.Content)" />
         </div>
+
+        <h5>Danh sách câu trả lời</h5>
+        @foreach (var answer in _question.Answers)
+        {
+            var index = _question.Answers.IndexOf(answer);
+            <div class="mb-2 d-flex align-items-start">
+                <InputText class="form-control me-2" 
+                           @bind-Value="_question.Answers[index].Content" 
+                           placeholder="Nhập câu trả lời..." />
+                
+                <input type="radio" 
+                       name="correctAnswer" 
+                       class="form-check-input mt-2 me-2"
+                       checked="@_question.Answers[index].IsCorrect"
+                       @onchange="@(() => MarkAsCorrect(index))" />
+
+                <label class="form-check-label mt-2 me-2">Đúng</label>
+
+                <button type="button" 
+                        class="btn btn-danger btn-sm mt-1" 
+                        @onclick="@(() => RemoveAnswer(index))">X</button>
+            </div>
+            <ValidationMessage For="@(() => _question.Answers[index].Content)" />
+        }
+
+        <button type="button" class="btn btn-secondary mt-2" @onclick="AddAnswer">+ Thêm câu trả lời</button>
+
+        <br /><br />
+        <button type="submit" class="btn btn-primary">Tạo câu hỏi</button>
+    </EditForm>
+
+    @if (_exam == null)
+    {
+        <p><em>Đang tải dữ liệu...</em></p>
     }
     else
     {
-        <p><em>Không có câu hỏi nào trong bài kiểm tra này.</em></p>
-    }
-    
+        <div class="card my-3">
+            <div class="card-body">
+                <h4>@_exam.Title</h4>
+                <p><strong>Người tạo:</strong> @_exam.UserId</p>
+            </div>
+        </div>
 
-   
+        @if (_exam.Questions != null && _exam.Questions.Any())
+        {
+            int questionNumber = 1;
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Danh sách câu hỏi</h5>
+                    <div class="list-group">
+                        @foreach (var question in _exam.Questions)
+                        {
+                            <div class="list-group-item">
+                                <h6 class="mb-1">Câu @questionNumber: @question.Content</h6>
+                                <small class="text-muted">
+                                    @foreach (var item in question.Answers.Select((answer, index) => new { answer, index }))
+                                    {
+                                        var letter = (char)('a' + item.index);
+                                        <div>
+                                            <strong>@letter)</strong> @item.answer.Content
+                                            @if (item.answer.IsCorrect)
+                                            {
+                                                <span class="text-success fw-bold"> ✔</span>
+                                            }
+                                        </div>
+                                    }
+                                </small>
+                            </div>
+                            questionNumber++;
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p><em>Không có câu hỏi nào trong bài kiểm tra này.</em></p>
+        }
+    }
 }
+
 @code {
     [Parameter] public int id { get; set; }
 

@@ -16,5 +16,11 @@ public class QuestionService
     {
         return await _http.PostAsJsonAsync($"api/question/{examId}", newQuestion);
     }
+    
+    public async Task<QuestionDto?> GetQuestionByIdAsync(int id)
+    {
+        var question = await _http.GetFromJsonAsync<QuestionDto>($"api/question/{id}/exam");
+        return question;
+    }
 
 }

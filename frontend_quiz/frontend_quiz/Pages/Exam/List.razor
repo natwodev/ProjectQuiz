@@ -4,13 +4,14 @@
 @inject ExamService ExamService
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
-
+@inject SubmissionService SubmissionService
 @if (!_isAuthenticated)
 {
     <div class="alert alert-warning">
         Please <a href="/login">login</a> to view your orders.
     </div>
-}else if (!_isAdmin)
+}
+else if (!_isAdmin && !_isStudent)
 {
     <div class="alert alert-danger">
         Bạn không có quyền truy cập trang này.
@@ -19,9 +20,12 @@
 else
 {
     <h3>Danh sách bài kiểm tra</h3>
-    <button class="btn btn-secondary mb-3" @onclick="GoToCreateExams">
-        Tạo bài kiểm tra
-    </button>
+    @if (_isAdmin)
+    {
+        <button class="btn btn-secondary mb-3" @onclick="GoToCreateExams">
+            Tạo bài kiểm tra
+        </button>
+    }
     @if (_exams == null)
     {
         <p><em>Đang tải...</em></p>
@@ -49,9 +53,18 @@ else
                     <td>@exam.Title</td>
                     <td>@exam.UserId</td>
                     <td>
-                        <button class="btn btn-primary btn-sm" @onclick="() => NavigateToView(exam.ExamId)" title="Xem chi tiết">
-                            <i class="fas fa-eye"></i>
-                        </button>
+                        @if (_isAdmin)
+                        {
+                            <button class="btn btn-primary btn-sm" @onclick="() => NavigateToView(exam.ExamId)" title="Xem chi tiết">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        }
+                        @if (_isStudent)
+                        {
+                            <button class="btn btn-success btn-sm" @onclick="() => HandleValidSubmit(exam.ExamId)" title="Làm bài">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        }
                     </td>
                 </tr>
             }
@@ -62,15 +75,17 @@ else
 
 @code {
     private bool _isAdmin;
+    private bool _isStudent;
     private List<ExamDto>? _exams;
     private bool _isAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {
         _isAdmin = await AuthService.IsAdmin();
+        _isStudent = await AuthService.IsStudent();
         _isAuthenticated = await AuthService.IsAuthenticated();
 
-        if (!_isAdmin)
+        if (!_isAdmin && !_isStudent)
         {
             NavigationManager.NavigateTo("/");
             return;
@@ -87,4 +102,11 @@ else
     {
         NavigationManager.NavigateTo($"/exam/view/{id}");
     }
+
+    private async Task HandleValidSubmit(int id)
+    {
+        var response = await SubmissionService.CreateSubmissionAsync(id);
+        NavigationManager.NavigateTo($"/submission/view/{response}");
+    }
+    
 }
