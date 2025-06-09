@@ -16,4 +16,10 @@
       <Folder Include="Pages\Answer\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Pages\Question\CraeteQuestion.razor.cs">
+        <DependentUpon>CreateQuestion.razor</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
