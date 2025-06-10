@@ -16,15 +16,10 @@ public class SubmissionService
     {
         return await _http.PostAsync($"api/submission/{examId}", null);
     }*/
-    public async Task<int> CreateSubmissionAsync(int examId)
+    public async Task<HttpResponseMessage> CreateSubmissionAsync(int examId)
     {
-        var response = await _http.PostAsync($"api/submission/{examId}", null);
-        response.EnsureSuccessStatusCode();
-        var submissionId = await response.Content.ReadFromJsonAsync<int>();
-        return submissionId;
+        return await _http.PostAsync($"api/submission/{examId}", null);
     }
-
-
     
     public async Task<SubmissionDto?> GetSubmissionByIdAsync(int id)
     {

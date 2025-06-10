@@ -62,7 +62,7 @@ else
                         @if (_isStudent)
                         {
                             <button class="btn btn-success btn-sm" @onclick="() => HandleValidSubmit(exam.ExamId)" title="Làm bài">
-                                <i class="fas fa-pencil-alt"></i>
+                                Làm bài kiểm tra
                             </button>
                         }
                     </td>
@@ -73,11 +73,17 @@ else
     }
 }
 
+@if (!string.IsNullOrEmpty(_errorMessage))
+{
+    <div class="alert alert-danger mt-3">@_errorMessage</div>
+}
+
 @code {
     private bool _isAdmin;
     private bool _isStudent;
     private List<ExamDto>? _exams;
     private bool _isAuthenticated;
+    private string? _errorMessage;
 
     protected override async Task OnInitializedAsync()
     {
@@ -105,8 +111,32 @@ else
 
     private async Task HandleValidSubmit(int id)
     {
-        var response = await SubmissionService.CreateSubmissionAsync(id);
-        NavigationManager.NavigateTo($"/submission/view/{response}");
+
+        try
+        {
+            var response = await SubmissionService.CreateSubmissionAsync(id);
+            if (response.IsSuccessStatusCode)
+            {
+                var createdSubmission = await response.Content.ReadFromJsonAsync<SubmissionDto>();
+                if (createdSubmission != null)
+                {
+                    NavigationManager.NavigateTo($"/submission/view/{createdSubmission.SubmissionId}");
+                }
+                else
+                {
+                    _errorMessage = "Tạo bài kiểm tra thành công nhưng không đọc được thông tin.";
+                }
+            }
+            else
+            {
+                _errorMessage = "Tạo bài kiểm tra thất bại.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Lỗi: {ex.Message}";
+        }
     }
+
     
 }

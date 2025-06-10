@@ -1,6 +1,85 @@
-@page "/List"
-<h3>List</h3>
+@page "/submissions"
+@using frontend_quiz.DTOs
+@using frontend_quiz.Services
+@inject ExamService ExamService
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject SubmissionService SubmissionService
+
+
+
+@if (!_isAuthenticated)
+{
+    <div class="alert alert-warning">
+        Please <a href="/login">login</a> to view your orders.
+    </div>
+}
+else if (!_isAdmin && !_isStudent)
+{
+    <div class="alert alert-danger">
+        Bạn không có quyền truy cập trang này.
+    </div>
+}
 
 @code {
+    private bool _isAdmin;
+    private bool _isStudent;
+    private List<ExamDto>? _exams;
+    private bool _isAuthenticated;
+    private string? _errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isAdmin = await AuthService.IsAdmin();
+        _isStudent = await AuthService.IsStudent();
+        _isAuthenticated = await AuthService.IsAuthenticated();
+
+        if (!_isAdmin && !_isStudent)
+        {
+            NavigationManager.NavigateTo("/");
+            return;
+        }
+
+        var exams = await ExamService.GetAllExamsAsync();
+        _exams = exams?.ToList();
+    }
+    private void GoToCreateExams()
+    {
+        NavigationManager.NavigateTo("/CreateExam");
+    }
+    private void NavigateToView(int id)
+    {
+        NavigationManager.NavigateTo($"/exam/view/{id}");
+    }
+
+    private async Task HandleValidSubmit(int id)
+    {
+
+        try
+        {
+            var response = await SubmissionService.CreateSubmissionAsync(id);
+            if (response.IsSuccessStatusCode)
+            {
+                var createdSubmission = await response.Content.ReadFromJsonAsync<SubmissionDto>();
+                if (createdSubmission != null)
+                {
+                    NavigationManager.NavigateTo($"/submission/view/{createdSubmission.SubmissionId}");
+                }
+                else
+                {
+                    _errorMessage = "Tạo bài kiểm tra thành công nhưng không đọc được thông tin.";
+                }
+            }
+            else
+            {
+                _errorMessage = "Tạo bài kiểm tra thất bại.";
+            }
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"Lỗi: {ex.Message}";
+        }
+    }
+
     
 }

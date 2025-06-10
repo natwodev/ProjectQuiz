@@ -6,7 +6,6 @@
 @inject NavigationManager NavigationManager
 @inject QuestionService questionService
 
-
 @if (!_isAuthenticated)
 {
     <div class="alert alert-warning">
@@ -21,33 +20,30 @@ else if (!_isStudent)
 }
 else
 {
-    <h3>Chi tiết bài kiểm tra</h3>
-    @if (_submission == null)
+    if (_submission == null)
     {
-        <p><em>Đang tải dữ liệu...</em></p>
+        <p>Đang tải dữ liệu...</p>
     }
     else
     {
-        <div class="card my-3">
-            <div class="card-body">
-                <h4>@_submission.ExamId</h4>
-                <p><strong>Người Thi:</strong> @_submission.UserId</p>
-            </div>
-        </div>
+
     }
 }
 
 @code {
     [Parameter] public int id { get; set; }
-    
+
     private SubmissionDto? _submission;
     private bool _isStudent;
     private bool _isAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {
-        _isStudent = await AuthService.IsStudent();
         _isAuthenticated = await AuthService.IsAuthenticated();
+
+        if (!_isAuthenticated) return;
+
+        _isStudent = await AuthService.IsStudent();
 
         if (!_isStudent)
         {
@@ -55,6 +51,6 @@ else
             return;
         }
 
-        var _submission = await Submission.GetSubmissionByIdAsync(id);
+        _submission = await Submission.GetSubmissionByIdAsync(id);
     }
 }
