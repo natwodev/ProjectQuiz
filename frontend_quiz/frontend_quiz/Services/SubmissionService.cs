@@ -26,4 +26,10 @@ public class SubmissionService
         var submission = await _http.GetFromJsonAsync<SubmissionDto>($"api/submission/{id}");
         return submission;
     }
+    
+    public async Task<List<SubmissionDto>> GetAllSubmissionByUserIdAsync()
+    {
+        var submissions = await _http.GetFromJsonAsync<List<SubmissionDto>>("api/submission");
+        return submissions ?? new List<SubmissionDto>();
+    }
 }

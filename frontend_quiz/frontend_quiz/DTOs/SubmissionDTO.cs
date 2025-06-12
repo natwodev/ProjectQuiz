@@ -4,6 +4,7 @@ public class SubmissionDto
 {
     public int SubmissionId { get; set; }
     public int? ExamId { get; set; }
+    public string Title { get; set; }
     public string? UserId { get; set; }
     public ICollection<UserAnswerDto>? UserAnswers { get; set; }
     public ExamDto? Exam { get; set; } // Gắn luôn Exam để tiện truy xuất

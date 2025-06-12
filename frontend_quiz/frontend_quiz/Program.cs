@@ -14,6 +14,7 @@ builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ExamService>();
 builder.Services.AddScoped<QuestionService>();
 builder.Services.AddScoped<SubmissionService>();
+builder.Services.AddSingleton<AppState>();
 
 
 // Đăng ký AuthHeaderHandler

@@ -4,6 +4,7 @@
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
 @inject NavigationManager Navigation
+@inject AppState AppState
 
 <div class="page">
     <div class="sidebar">
@@ -72,12 +73,9 @@
 
     private async Task Logout()
     {
-        // Thực hiện đăng xuất thông qua AuthService
         await AuthService.Logout();
-        // Sự kiện OnAuthStateChanged sẽ được AuthService kích hoạt sau khi đăng xuất,
-        // và AuthService_OnAuthStateChanged sẽ xử lý việc cập nhật UI.
-        Navigation.NavigateTo("/counter");
-
+        await AppState.SetStateAsync(AuthService); 
+        Navigation.NavigateTo("/login");
     }
 
     public void Dispose()

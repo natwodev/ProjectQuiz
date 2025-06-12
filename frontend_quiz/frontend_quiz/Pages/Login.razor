@@ -3,6 +3,7 @@
 @using frontend_quiz.Services
 @inject AuthService AuthService
 @inject NavigationManager NavigationManager
+@inject AppState AppState
 
 <h3>Đăng nhập</h3>
 
@@ -57,6 +58,8 @@
 
         if (result.IsSuccess)
         {
+            await AppState.SetStateAsync(AuthService); 
+
             NavigationManager.NavigateTo("/counter");
         }
         else
@@ -66,4 +69,5 @@
 
         isLoading = false;
     }
+
 }

@@ -20,11 +20,54 @@ else if (!_isAdmin && !_isStudent)
         Bạn không có quyền truy cập trang này.
     </div>
 }
+else
+{
+    <h3>Danh sách bài kiểm tra đã làm</h3>
+    @if (_submission == null)
+    {
+        <p><em>Đang tải...</em></p>
+    }
+    else if (!_submission.Any())
+    {
+        <p><em>Không có bài kiểm tra nào.</em></p>
+    }
+    else
+    {
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Tên bài thi</th>
+                <th>SubmissionId</th>
+                <th>Người thi</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var submission in _submission)
+            {
+                <tr>
+                    <td>@submission.Title</td>
+                    <td>@submission.SubmissionId</td>
+                    <td>@submission.UserId</td>
+                    <td>
+                        @if (_isStudent)
+                        {
+                            <button class="btn btn-success btn-sm" @onclick="() => NavigateToView(submission.SubmissionId)" title="Chi tiết bài làm">
+                                Chi tiết bài làm
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>   
+    }
+}
 
 @code {
     private bool _isAdmin;
     private bool _isStudent;
-    private List<ExamDto>? _exams;
+    private List<SubmissionDto>? _submission;
     private bool _isAuthenticated;
     private string? _errorMessage;
 
@@ -40,46 +83,12 @@ else if (!_isAdmin && !_isStudent)
             return;
         }
 
-        var exams = await ExamService.GetAllExamsAsync();
-        _exams = exams?.ToList();
+        var submissions = await SubmissionService.GetAllSubmissionByUserIdAsync();
+        _submission = submissions?.ToList();
     }
-    private void GoToCreateExams()
-    {
-        NavigationManager.NavigateTo("/CreateExam");
-    }
+    
     private void NavigateToView(int id)
     {
-        NavigationManager.NavigateTo($"/exam/view/{id}");
+        NavigationManager.NavigateTo($"/submission/view/{id}");
     }
-
-    private async Task HandleValidSubmit(int id)
-    {
-
-        try
-        {
-            var response = await SubmissionService.CreateSubmissionAsync(id);
-            if (response.IsSuccessStatusCode)
-            {
-                var createdSubmission = await response.Content.ReadFromJsonAsync<SubmissionDto>();
-                if (createdSubmission != null)
-                {
-                    NavigationManager.NavigateTo($"/submission/view/{createdSubmission.SubmissionId}");
-                }
-                else
-                {
-                    _errorMessage = "Tạo bài kiểm tra thành công nhưng không đọc được thông tin.";
-                }
-            }
-            else
-            {
-                _errorMessage = "Tạo bài kiểm tra thất bại.";
-            }
-        }
-        catch (Exception ex)
-        {
-            _errorMessage = $"Lỗi: {ex.Message}";
-        }
-    }
-
-    
 }
