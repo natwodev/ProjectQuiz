@@ -23,10 +23,14 @@ public class SubmissionRepository : ISubmissionRepository
     {
         var submission = await _context.Submissions
             .Include(s => s.UserAnswers)
+            .ThenInclude(ua => ua.Question)
+            .ThenInclude(q => q.Answers)
             .FirstOrDefaultAsync(s => s.SubmissionId == id);
 
         return submission != null ? _mapper.Map<SubmissionDto>(submission) : null;
     }
+
+
 
     public async Task<IEnumerable<SubmissionDto>> GetSubmissionsByUserIdAsync(string userId)
     {

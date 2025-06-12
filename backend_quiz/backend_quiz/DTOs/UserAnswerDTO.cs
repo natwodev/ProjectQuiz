@@ -6,6 +6,8 @@ public class UserAnswerDto
     public int SubmissionId { get; set; }
     public int QuestionId { get; set; }
     public int SelectedAnswerId { get; set; }
+    public QuestionDto Question { get; set; }
+
 }
 
 public class CreateUserAnswerDto

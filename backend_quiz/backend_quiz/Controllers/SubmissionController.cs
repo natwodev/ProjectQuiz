@@ -19,6 +19,17 @@ public class SubmissionController : ControllerBase
         _submissionService = submissionService;
     }
     
+    [HttpGet]
+    [Authorize(Policy = "StudentOnly")]
+    public async Task<ActionResult<IEnumerable<ExamDto>>> GetAllExamsAsync()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized(new { message = "Token không hợp lệ!" });
+        var submission = await _submissionService.GetSubmissionsByUserIdAsync(userId);
+        return Ok(submission);
+    }
+
     
     [HttpPost("{examId}")]
     [Authorize(Policy = "StudentOrAdmin")]
@@ -31,4 +42,13 @@ public class SubmissionController : ControllerBase
         return Ok(question);
     }
 
+    [HttpGet("{id}")]
+    [Authorize(Policy = "StudentOnly")]
+    public async Task<ActionResult<SubmissionDto>> GetSubmissionByIdAsync(int id)
+    {
+        var submission = await _submissionService.GetSubmissionByIdAsync(id);
+        return Ok(submission);
+    }
 }
+
+

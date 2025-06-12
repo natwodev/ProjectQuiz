@@ -32,7 +32,7 @@ public class ExamController : ControllerBase
     
     
     [HttpGet]
-    [Authorize(Policy = "AdminOnly")]
+    [Authorize(Policy = "StudentOrAdmin")]
     public async Task<ActionResult<IEnumerable<ExamDto>>> GetAllExamsAsync()
     {
         var exams = await _examService.GetAllExamsAsync();
