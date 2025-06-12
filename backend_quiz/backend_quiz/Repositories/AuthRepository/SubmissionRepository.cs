@@ -25,6 +25,7 @@ public class SubmissionRepository : ISubmissionRepository
             .Include(s => s.UserAnswers)
             .ThenInclude(ua => ua.Question)
             .ThenInclude(q => q.Answers)
+            .Include(s => s.Exam) 
             .FirstOrDefaultAsync(s => s.SubmissionId == id);
 
         return submission != null ? _mapper.Map<SubmissionDto>(submission) : null;
@@ -36,11 +37,15 @@ public class SubmissionRepository : ISubmissionRepository
     {
         var submissions = await _context.Submissions
             .Include(s => s.UserAnswers)
+            .ThenInclude(ua => ua.Question)
+            .ThenInclude(q => q.Answers)
+            .Include(s => s.Exam) 
             .Where(s => s.UserId == userId)
             .ToListAsync();
 
         return _mapper.Map<IEnumerable<SubmissionDto>>(submissions);
     }
+
 
     public async Task<IEnumerable<SubmissionDto>> GetSubmissionsByExamIdAsync(int examId)
     {

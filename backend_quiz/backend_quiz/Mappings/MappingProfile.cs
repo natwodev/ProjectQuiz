@@ -23,7 +23,8 @@ public class MappingProfile : Profile
         CreateMap<UpdateQuestionDto, Question>();
         CreateMap<CreateAnswerDto, Answer>();
         CreateMap<UpdateAnswerDto, Answer>();
-        CreateMap<Submission, SubmissionDto>();
+        CreateMap<Submission, SubmissionDto>()
+            .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Exam.Title));
         CreateMap<UserAnswer, UserAnswerDto>();
         CreateMap<CreateSubmissionDto, Submission>();
         CreateMap<CreateUserAnswerDto, UserAnswer>();
