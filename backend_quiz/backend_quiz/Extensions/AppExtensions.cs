@@ -1,5 +1,6 @@
 using AspNetCoreRateLimit;
 using backend_quiz.Middlewares;
+using backend_quiz.Hubs;
 
 namespace backend_quiz.Extensions
 {
@@ -7,31 +8,28 @@ namespace backend_quiz.Extensions
     {
         public static void ConfigureMiddleware(this WebApplication app)
         {
-            app.UseMiddleware<ExceptionMiddleware>(); // Đăng ký middleware xử lý lỗi
+            app.UseMiddleware<ExceptionMiddleware>(); // Xử lý lỗi chung
 
-            app.UseMiddleware<MaintenanceMiddleware>();
+            app.UseMiddleware<MaintenanceMiddleware>(); // Check chế độ bảo trì
 
-            // Cấu hình API lắng nghe trên tất cả IP trong mạng
-            app.Urls.Add("http://0.0.0.0:5163");
+            app.Urls.Add("http://0.0.0.0:5163"); // Lắng nghe mọi IP
 
-            app.UseCors("AllowFlutter"); // Bật CORS
-            //app.UseHttpsRedirection();
-            
-            //  Kiểm tra token trước khi xác thực
-            app.UseMiddleware<JwtBlacklistMiddleware>();
-            
-            // Xác thực & phân quyền
+            app.UseCors("AllowAll"); // ✅ Dùng 1 lần, đúng policy
+
+            // app.UseHttpsRedirection(); // Bật lại nếu dùng HTTPS
+
+            app.UseMiddleware<JwtBlacklistMiddleware>(); // Check token trong blacklist
+
             app.UseAuthentication();
             app.UseAuthorization();
-            
-            //app.UseStaticFiles();  // Cho phép phục vụ file tĩnh
+
+            // app.UseStaticFiles(); // Bật nếu có phục vụ file tĩnh (ảnh, js...)
 
             app.UseIpRateLimiting();
-            
-            // Xử lý API
-            app.MapControllers();
-          //  app.MapHub<NotificationHub>("/notificationHub");
 
+            app.MapControllers();
+
+            app.MapHub<NotificationHub>("/notificationHub"); // ✅ SignalR Hub
         }
     }
 }

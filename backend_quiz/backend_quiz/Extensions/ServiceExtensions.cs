@@ -32,10 +32,9 @@ namespace backend_quiz.Extensions
                     // googleOptions.CallbackPath = new PathString("/api/auth/external-login-callback");
                 });
                 */
-            
             services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -44,24 +43,23 @@ namespace backend_quiz.Extensions
             
             services.Configure<IdentityOptions>(options =>
             {
+                // Password
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 3;
                 options.Password.RequiredUniqueChars = 0;
+
+                // Lockout
+                options.Lockout.MaxFailedAccessAttempts = 10;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                options.Lockout.AllowedForNewUsers = true;
             });
+
             services.AddAutoMapper(typeof(MappingProfile));
 
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Cấu hình số lần đăng nhập sai tối đa trước khi bị khóa
-                options.Lockout.MaxFailedAccessAttempts = 10; // ví dụ cho phép 10 lần
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15); // khóa 15 phút
-                options.Lockout.AllowedForNewUsers = true; // áp dụng cho cả người dùng mới
-            });
-
-
+            
             // Đăng ký DbContext
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -69,7 +67,7 @@ namespace backend_quiz.Extensions
             // Đăng ký CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowFlutter", policy =>
+                options.AddPolicy("AllowAll", policy =>
                     policy.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod());
@@ -81,9 +79,6 @@ namespace backend_quiz.Extensions
 
             // Đăng ký xác thực JWT (được tách riêng)
             services.ConfigureJwt(configuration);
-
-            // Đăng ký các service cần thiết cho API Controllers
-            services.AddControllers();
             
             services.AddStackExchangeRedisCache(options =>
             {
